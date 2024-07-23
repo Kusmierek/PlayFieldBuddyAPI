@@ -1,4 +1,4 @@
-namespace PlayFieldBuddy.Domain.Enum;
+﻿namespace PlayFieldBuddy.Domain.Enum;
 
 public enum Role
 {

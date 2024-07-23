@@ -22,6 +22,21 @@ namespace PlayFieldBuddy.Repositories.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GamePitch", b =>
+                {
+                    b.Property<Guid>("GamesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PitchesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GamesId", "PitchesId");
+
+                    b.HasIndex("PitchesId");
+
+                    b.ToTable("GamePitch");
+                });
+
             modelBuilder.Entity("GameUser", b =>
                 {
                     b.Property<Guid>("GamesId")
@@ -54,6 +69,28 @@ namespace PlayFieldBuddy.Repositories.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("PlayFieldBuddy.Domain.Models.Pitch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PitchType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("adress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pitches");
+                });
+
             modelBuilder.Entity("PlayFieldBuddy.Domain.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -78,6 +115,21 @@ namespace PlayFieldBuddy.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("GamePitch", b =>
+                {
+                    b.HasOne("PlayFieldBuddy.Domain.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlayFieldBuddy.Domain.Models.Pitch", null)
+                        .WithMany()
+                        .HasForeignKey("PitchesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GameUser", b =>

@@ -12,8 +12,8 @@ using PlayFieldBuddy.Repositories;
 namespace PlayFieldBuddy.Repositories.Migrations
 {
     [DbContext(typeof(PlayFieldBuddyDbContext))]
-    [Migration("20240719121832_Initial")]
-    partial class Initial
+    [Migration("20240723133239_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace PlayFieldBuddy.Repositories.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("GamePitch", b =>
+                {
+                    b.Property<Guid>("GamesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PitchesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GamesId", "PitchesId");
+
+                    b.HasIndex("PitchesId");
+
+                    b.ToTable("GamePitch");
+                });
 
             modelBuilder.Entity("GameUser", b =>
                 {
@@ -57,6 +72,28 @@ namespace PlayFieldBuddy.Repositories.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("PlayFieldBuddy.Domain.Models.Pitch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PitchType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("adress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pitches");
+                });
+
             modelBuilder.Entity("PlayFieldBuddy.Domain.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -81,6 +118,21 @@ namespace PlayFieldBuddy.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("GamePitch", b =>
+                {
+                    b.HasOne("PlayFieldBuddy.Domain.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PlayFieldBuddy.Domain.Models.Pitch", null)
+                        .WithMany()
+                        .HasForeignKey("PitchesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GameUser", b =>

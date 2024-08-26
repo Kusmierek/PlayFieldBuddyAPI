@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using PlayFieldBuddy.Domain.Enum;
 using PlayFieldBuddy.Domain.Models;
 using PlayFieldBuddy.Repositories.Interfaces;
 
@@ -40,7 +41,7 @@ public class UserService : IUserService
         foundUser.Games = user.Games;
         foundUser.Password = HashPassword(user.Password);
         foundUser.Mail = user.Mail;
-        foundUser.Role = user.Role;
+        foundUser.Role = Role.User;
         
         await _userRepository.UpdateUser(foundUser, cancellationToken);
         return true;
@@ -61,7 +62,7 @@ public class UserService : IUserService
             Username = user.Username,
             Mail = user.Mail,
             Password = HashPassword(user.Password),
-            Role = user.Role,
+            Role = Role.User,
             Games = new List<Game>()
         };
         

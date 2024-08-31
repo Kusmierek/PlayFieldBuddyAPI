@@ -2,7 +2,7 @@ namespace PlayFieldBuddy.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 using PlayFieldBuddy.Domain.Models;
-
+using PlayFieldBuddy.Domain.Models.Pitch;
 
 public class PlayFieldBuddyDbContext : DbContext
 {

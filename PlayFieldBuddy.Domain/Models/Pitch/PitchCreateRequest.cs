@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayFieldBuddy.Domain.Models.Pitch
+namespace PlayFieldBuddy.Domain.Models
 {
     public class PitchCreateRequest
     {

@@ -1,7 +1,7 @@
-﻿using PlayFieldBuddy.Domain.Enum;
+﻿using System.ComponentModel.DataAnnotations;
+using PlayFieldBuddy.Domain.Enum;
 
-
-namespace PlayFieldBuddy.Domain.Models.Pitch;
+namespace PlayFieldBuddy.Domain.Models;
 
 public class Pitch
 {

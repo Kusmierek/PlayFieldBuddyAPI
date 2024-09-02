@@ -13,7 +13,9 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services
     .AddScoped<IUserRepository, UserRepository>()
-    .AddScoped<IUserService, UserService>();
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<IPitchRepository, PitchRepository>()
+    .AddScoped<IPitchService, PitchService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetSection("Settings:ConnectionString").Value;

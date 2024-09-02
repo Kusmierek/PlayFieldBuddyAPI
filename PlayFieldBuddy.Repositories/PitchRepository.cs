@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PlayFieldBuddy.Domain.Models.Pitch;
+using PlayFieldBuddy.Domain.Models;
 using PlayFieldBuddy.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;

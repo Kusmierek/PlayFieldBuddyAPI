@@ -23,5 +23,7 @@ public class PlayFieldBuddyDbContext : DbContext
         modelBuilder.Entity<Pitch>()
           .HasMany(e => e.Games);
 
+    
+
     }
 }

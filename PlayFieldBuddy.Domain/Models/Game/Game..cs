@@ -8,7 +8,7 @@ public class Game
 
     public DateTime GameDate { get; set; }
 
-    public int PlayersLimit { get; set; }
+    public int PlayersLimit { get; set; } = 22;
 
     public ICollection<User> Users { get; set; } = new List<User>();
 

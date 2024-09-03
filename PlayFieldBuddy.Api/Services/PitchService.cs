@@ -29,7 +29,7 @@ namespace PlayFieldBuddy.Api.Services
 
                 Id = new Guid(),
                 Name = addPitch.Name,
-                Adress = addPitch.Address,
+                Address = addPitch.Address,
                 Games = new List<Game>(),
                 PitchType = PitchType.Uncovered
 
@@ -68,7 +68,7 @@ namespace PlayFieldBuddy.Api.Services
 
            foundPitch.Games = new List<Game>();
           foundPitch.Name = pitch.Name;
-            foundPitch.Adress = pitch.Adress;
+            foundPitch.Address = pitch.Address;
 
 
             await _PitchRepository.UpdatePitch(foundPitch, cancellationToken);

@@ -15,7 +15,10 @@ builder.Services
     .AddScoped<IUserRepository, UserRepository>()
     .AddScoped<IUserService, UserService>()
     .AddScoped<IPitchRepository, PitchRepository>()
-    .AddScoped<IPitchService, PitchService>();
+    .AddScoped<IPitchService, PitchService>()
+.AddScoped<IGameService, GameService>()
+.AddScoped<IGameRepository, GameRepository>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetSection("Settings:ConnectionString").Value;

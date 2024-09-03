@@ -3,7 +3,6 @@ namespace PlayFieldBuddy.Repositories;
 using Microsoft.EntityFrameworkCore;
 using PlayFieldBuddy.Domain.Models;
 
-
 public class PlayFieldBuddyDbContext : DbContext
 {
 

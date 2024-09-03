@@ -26,7 +26,7 @@ namespace PlayFieldBuddy.Api.Controllers
 
         [HttpGet("{Id}")]
 
-        public async Task<IActionResult> GetSinglePitch (Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSinglePitch ([FromRoute]Guid Id, CancellationToken cancellationToken)
         {
             var pitch = await _pitchRepository.GetSinglePitchById(Id, cancellationToken);
 
@@ -93,7 +93,7 @@ namespace PlayFieldBuddy.Api.Controllers
 
         [HttpDelete("{Id}")]
 
-        public async Task<IActionResult>DeletePitch(Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult>DeletePitch([FromRoute]Guid Id, CancellationToken cancellationToken)
         {
             try
             {

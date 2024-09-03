@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetSingleUser(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult> GetSingleUser(Guid id, CancellationToken cancellationToken)
     {
         try
         {
@@ -46,7 +46,7 @@ public class UserController : ControllerBase
     
     
     [HttpPost]
-    public async Task<IActionResult> AddUser([FromBody] UserCreateRequest user, CancellationToken cancellationToken)
+    public async Task<ActionResult> AddUser([FromBody] UserCreateRequest user, CancellationToken cancellationToken)
     {
         try
         {
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+    public async Task<ActionResult> GetAllUsers(CancellationToken cancellationToken)
     {
         try
         {

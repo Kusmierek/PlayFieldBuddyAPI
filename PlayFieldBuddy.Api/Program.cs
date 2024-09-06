@@ -16,8 +16,8 @@ builder.Services
     .AddScoped<IUserService, UserService>()
     .AddScoped<IPitchRepository, PitchRepository>()
     .AddScoped<IPitchService, PitchService>()
-.AddScoped<IGameService, GameService>()
-.AddScoped<IGameRepository, GameRepository>();
+    .AddScoped<IGameService, GameService>()
+    .AddScoped<IGameRepository, GameRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

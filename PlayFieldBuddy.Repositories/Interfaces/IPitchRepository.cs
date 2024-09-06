@@ -9,7 +9,6 @@ namespace PlayFieldBuddy.Repositories.Interfaces
 {
     public interface IPitchRepository
     {
-
         Task<Pitch> GetSinglePitchById(Guid id, CancellationToken cancellationToken);
         Task<IEnumerable<Pitch>> GetAllPitches(CancellationToken cancellationToken);
         Task<Pitch> GetByName(string name, CancellationToken cancellationToken);

@@ -1,79 +1,64 @@
 ﻿using PlayFieldBuddy.Domain.Models;
 using PlayFieldBuddy.Repositories.Interfaces;
-using System.Xml.Linq;
 
 namespace PlayFieldBuddy.Api.Services
 {
     public class PitchService : IPitchService
     {
-
-        private readonly IPitchRepository _PitchRepository;
+        private readonly IPitchRepository _pitchRepository;
 
         public PitchService(IPitchRepository pitchRepository)
         {
-            _PitchRepository = pitchRepository;
+            _pitchRepository = pitchRepository;
         }
-
 
         public async Task<bool> AddPitch(PitchCreateRequest addPitch, CancellationToken cancellationToken)
         {
-            var foundPitch = await _PitchRepository.GetByName(addPitch.Name, cancellationToken);
+            var foundPitch = await _pitchRepository.GetByName(addPitch.Name, cancellationToken);
             if (foundPitch != null)
             {
                 return false;
-
-            
             }
-            var newPitch = new Pitch()
-            {
 
-                Id = new Guid(),
+            var newPitch = new Pitch
+            {
+                Id = Guid.NewGuid(),
                 Name = addPitch.Name,
                 Address = addPitch.Address,
                 Games = new List<Game>(),
                 PitchType = PitchType.Uncovered
-
-
             };
 
-           await _PitchRepository.AddPitch(newPitch, cancellationToken);
+            await _pitchRepository.AddPitch(newPitch, cancellationToken);
             return true;
-
-
         }
 
         public async Task<bool> DeletePitch(Guid Id, CancellationToken cancellationToken)
         {
-            var foundPitch = await _PitchRepository.GetSinglePitchById(Id, cancellationToken);
+            var foundPitch = await _pitchRepository.GetSinglePitchById(Id, cancellationToken);
             if (foundPitch == null)
             {
                 return false;
-
-
             }
 
-            await _PitchRepository.DeletePitch(foundPitch, cancellationToken);
+            await _pitchRepository.DeletePitch(foundPitch, cancellationToken);
             return true;
         }
 
         public async Task<bool> UpdatePitch(Pitch pitch, CancellationToken cancellationToken)
         {
-            var foundPitch = await _PitchRepository.GetByName(pitch.Name, cancellationToken);
-            if (foundPitch != null)
+            var foundPitch = await _pitchRepository.GetSinglePitchById(pitch.Id, cancellationToken);
+            if (foundPitch == null)
             {
                 return false;
-
-
             }
 
-           foundPitch.Games = new List<Game>();
-          foundPitch.Name = pitch.Name;
+            foundPitch.Name = pitch.Name;
             foundPitch.Address = pitch.Address;
+            foundPitch.Games = new List<Game>();
 
-
-            await _PitchRepository.UpdatePitch(foundPitch, cancellationToken);
+            await _pitchRepository.UpdatePitch(foundPitch, cancellationToken);
             return true;
-
         }
     }
 }

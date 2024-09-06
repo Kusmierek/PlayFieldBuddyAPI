@@ -7,17 +7,13 @@ using ILogger = Serilog.ILogger;
 
 namespace PlayFieldBuddy.Api.Controllers
 {
-
     [ApiController]
     [Route("Games")]
-
     public class GameController : ControllerBase
     {
-
         private readonly IGameService _gameService;
         private readonly IGameRepository _gameRepository;
         private readonly ILogger _logger;
-
 
         public GameController(IGameService gameService, IGameRepository gameRepository, ILogger logger)
         {
@@ -27,59 +23,41 @@ namespace PlayFieldBuddy.Api.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult> GetSingleGame([FromRoute] Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSingleGame([FromRoute] Guid Id, CancellationToken cancellationToken)
         {
             try
             {
                 var getGame = await _gameRepository.GetGameById(Id, cancellationToken);
-
                 return Ok(getGame);
-
-               
             }
             catch (Exception ex)
             {
-
                 _logger.Error(ex, "Something went wrong while searching for Game. {ExceptionMessage}", ex.Message);
                 return Problem();
             }
-            
-
-
-
         }
 
-
         [HttpGet]
-
-        public async Task<IActionResult> GetAllGames( CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllGames(CancellationToken cancellationToken)
         {
             try
             {
                 var getGames = await _gameRepository.GetAllGames(cancellationToken);
-
                 return Ok(getGames);
-
-
             }
             catch (Exception ex)
             {
-
                 _logger.Error(ex, "Something went wrong while searching for all Games. {ExceptionMessage}", ex.Message);
                 return Problem();
             }
-
-
-
-
         }
 
         [HttpPost("{Id}")]
-        public async Task<IActionResult> AddGame([FromBody] GameCreateRequest gameCreateRequest,[FromRoute] Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddGame([FromBody] GameCreateRequest gameCreateRequest, [FromRoute] Guid Id, CancellationToken cancellationToken)
         {
             try
             {
-                await _gameService.AddGame(gameCreateRequest,Id, cancellationToken);
+                await _gameService.AddGame(gameCreateRequest, Id, cancellationToken);
                 return Ok();
             }
             catch (Exception ex)
@@ -118,10 +96,5 @@ namespace PlayFieldBuddy.Api.Controllers
                 return Problem();
             }
         }
-
-
-
-
-
     }
 }

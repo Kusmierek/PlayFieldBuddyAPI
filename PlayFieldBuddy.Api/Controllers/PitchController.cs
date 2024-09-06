@@ -6,13 +6,10 @@ using ILogger = Serilog.ILogger;
 
 namespace PlayFieldBuddy.Api.Controllers
 {
-
     [ApiController]
     [Route("pitches")]
-
     public class PitchController : ControllerBase
     {
-
         private readonly IPitchService _pitchService;
         private readonly IPitchRepository _pitchRepository;
         private readonly ILogger _logger;
@@ -25,40 +22,37 @@ namespace PlayFieldBuddy.Api.Controllers
         }
 
         [HttpGet("{Id}")]
-
-        public async Task<IActionResult> GetSinglePitch ([FromRoute]Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSinglePitch([FromRoute] Guid Id, CancellationToken cancellationToken)
         {
-            var pitch = await _pitchRepository.GetSinglePitchById(Id, cancellationToken);
-
-            
-            if (pitch == null)
+            try
             {
-                return NotFound();
+                var pitch = await _pitchRepository.GetSinglePitchById(Id, cancellationToken);
+                return Ok(pitch);
             }
-
-           
-            return Ok(pitch);
-
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Something went wrong while loading a single pitch. {ExceptionMessage}", ex.Message);
+                return Problem();
+            }
         }
 
         [HttpGet]
-
-        public async Task<IActionResult> GetAllPitches (CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllPitches(CancellationToken cancellationToken)
         {
-            var pitches = await _pitchRepository.GetAllPitches(cancellationToken);
-
-            if (pitches == null)
+            try
             {
+                var pitches = await _pitchRepository.GetAllPitches(cancellationToken);
+                return Ok(pitches);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Something went wrong while loading all pitches. {ExceptionMessage}", ex.Message);
                 return Problem();
             }
-
-            return Ok(pitches);
-
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> AddPitch ([FromBody]PitchCreateRequest pitchCreateRequest, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddPitch([FromBody] PitchCreateRequest pitchCreateRequest, CancellationToken cancellationToken)
         {
             try
             {
@@ -85,31 +79,21 @@ namespace PlayFieldBuddy.Api.Controllers
                 _logger.Error(ex, "Something went wrong while updating pitch. {ExceptionMessage}", ex.Message);
                 return Problem();
             }
-
-
-
         }
 
-
         [HttpDelete("{Id}")]
-
-        public async Task<IActionResult>DeletePitch([FromRoute]Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeletePitch([FromRoute] Guid Id, CancellationToken cancellationToken)
         {
             try
             {
                 var deletePitch = await _pitchService.DeletePitch(Id, cancellationToken);
-                return deletePitch? Ok("Pitch deleted successfully") : NotFound("Couldn't find the pitch");
+                return deletePitch ? Ok("Pitch deleted successfully") : NotFound("Couldn't find the pitch");
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Something went wrong while updating pitch. {ExceptionMessage}", ex.Message);
                 return Problem();
             }
-
         }
-
     }
-
-
 }
-

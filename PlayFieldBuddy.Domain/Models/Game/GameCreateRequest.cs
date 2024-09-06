@@ -5,8 +5,7 @@ namespace PlayFieldBuddy.Domain.Models
 {
     public class GameCreateRequest
     {
-        [Required]
-       
+        [Required]   
         public DateTime GameDate { get; set; }
 
         [Required]

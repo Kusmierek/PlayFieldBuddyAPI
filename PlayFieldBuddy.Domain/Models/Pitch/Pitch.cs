@@ -10,5 +10,4 @@ public class Pitch
     public string Address { get; set; }
     public PitchType PitchType { get; set; } = PitchType.Uncovered;
     public ICollection<Game> Games { get; set; } = new List<Game>();
-
 }

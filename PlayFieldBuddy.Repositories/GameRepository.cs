@@ -27,7 +27,10 @@ namespace PlayFieldBuddy.Repositories
 
         public async Task<IEnumerable<Game>> GetAllGames(CancellationToken cancellationToken)
         {
-            return await _dbContext.Games.ToListAsync(cancellationToken);
+            return await _dbContext.Games.Include(p=>p.Pitch)
+                .Include(p => p.Owner)
+                .Include(p => p.Users)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Game> GetGameById(Guid Id, CancellationToken cancellationToken)

@@ -38,7 +38,8 @@ public class UserService : IUserService
         }
 
         foundUser.Username = user.Username;
-        foundUser.Games = user.Games;
+        foundUser.JoinedGames = user.JoinedGames;
+        foundUser.OwnedGames = user.OwnedGames;
         foundUser.Password = HashPassword(user.Password);
         foundUser.Mail = user.Mail;
         foundUser.Role = Role.User;
@@ -63,7 +64,8 @@ public class UserService : IUserService
             Mail = user.Mail,
             Password = HashPassword(user.Password),
             Role = Role.User,
-            Games = new List<Game>()
+            JoinedGames = new List<Game>(),
+            OwnedGames = new List<Game>()
         };
         
         await _userRepository.AddUser(newUser, cancellationToken);

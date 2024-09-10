@@ -52,12 +52,12 @@ namespace PlayFieldBuddy.Api.Controllers
             }
         }
 
-        [HttpPost("{Id}")]
-        public async Task<IActionResult> AddGame([FromBody] GameCreateRequest gameCreateRequest, [FromRoute] Guid Id, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> AddGame([FromBody] GameCreateRequest gameCreateRequest, CancellationToken cancellationToken)
         {
             try
             {
-                await _gameService.AddGame(gameCreateRequest, Id, cancellationToken);
+                await _gameService.AddGame(gameCreateRequest, cancellationToken);
                 return Ok();
             }
             catch (Exception ex)
@@ -68,11 +68,11 @@ namespace PlayFieldBuddy.Api.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateGame([FromRoute] Guid Id, [FromBody] Game game, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateGame([FromRoute] Guid id, [FromBody] Game game, CancellationToken cancellationToken)
         {
             try
             {
-                var updateGame = await _gameService.UpdateGame(game, Id, cancellationToken);
+                var updateGame = await _gameService.UpdateGame(game, id, cancellationToken);
                 return updateGame ? Ok("Game updated successfully") : NotFound("Couldn't find the game");
             }
             catch (Exception ex)
@@ -83,11 +83,11 @@ namespace PlayFieldBuddy.Api.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteGame([FromRoute] Guid Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteGame([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             try
             {
-                var deleteGame = await _gameService.RemoveGame(Id, cancellationToken);
+                var deleteGame = await _gameService.RemoveGame(id, cancellationToken);
                 return deleteGame ? Ok("Game deleted successfully") : NotFound("Couldn't find the game");
             }
             catch (Exception ex)

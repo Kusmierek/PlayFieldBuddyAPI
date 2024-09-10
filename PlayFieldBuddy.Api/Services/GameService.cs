@@ -6,34 +6,43 @@ namespace PlayFieldBuddy.Api.Services
     public class GameService : IGameService
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IPitchRepository _pitchRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GameService(IGameRepository gameRepository)
+
+        public GameService(IGameRepository gameRepository, IPitchRepository pitchRepository, IUserRepository userRepository)
         {
             _gameRepository = gameRepository;
+            _pitchRepository = pitchRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<bool> AddGame(GameCreateRequest game, Guid Id, CancellationToken cancellationToken)
+        public async Task<bool> AddGame(GameCreateRequest game, CancellationToken cancellationToken)
         {
-            var foundGame = await _gameRepository.GetGameById(Id, cancellationToken);
-            if (foundGame != null)
+            var foundPitch = await _pitchRepository.GetSinglePitchById(game.PitchId, cancellationToken);
+            var foundUser = await _userRepository.GetSingleUserById(game.OwnerId, cancellationToken);
+            
+            if (foundPitch is null || foundUser is null)
             {
                 return false;
             }
-
+            
             var newGame = new Game
             {
+                Id = Guid.NewGuid(),
                 PlayersLimit = game.PlayersLimit,
                 GameDate = game.GameDate,
-                Pitch = game.Pitch
+                Pitch = foundPitch,
+                Owner = foundUser
             };
-
+            
             await _gameRepository.AddGame(newGame, cancellationToken);
             return true;
         }
 
-        public async Task<bool> RemoveGame(Guid Id, CancellationToken cancellationToken)
+        public async Task<bool> RemoveGame(Guid id, CancellationToken cancellationToken)
         {
-            var foundGame = await _gameRepository.GetGameById(Id, cancellationToken);
+            var foundGame = await _gameRepository.GetGameById(id, cancellationToken);
             if (foundGame == null)
             {
                 return false;

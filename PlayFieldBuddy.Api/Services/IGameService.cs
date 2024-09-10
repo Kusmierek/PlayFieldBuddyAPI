@@ -4,11 +4,11 @@ namespace PlayFieldBuddy.Api.Services
 {
     public interface IGameService
     {
-        Task<bool> AddGame(GameCreateRequest game,Guid Id, CancellationToken cancellationToken);
+        Task<bool> AddGame(GameCreateRequest game, CancellationToken cancellationToken);
 
-        Task<bool> RemoveGame(Guid Id, CancellationToken cancellationToken);
+        Task<bool> RemoveGame(Guid id, CancellationToken cancellationToken);
 
-        Task<bool> UpdateGame(Game game, Guid Id, CancellationToken cancellationToken);  
+        Task<bool> UpdateGame(Game game, Guid id, CancellationToken cancellationToken);  
 
 
     }

@@ -27,15 +27,19 @@ namespace PlayFieldBuddy.Repositories
 
         public async Task<IEnumerable<Game>> GetAllGames(CancellationToken cancellationToken)
         {
-            return await _dbContext.Games.Include(p=>p.Pitch)
+            return await _dbContext.Games
+                .Include(p=>p.Pitch)
                 .Include(p => p.Owner)
-                .Include(p => p.Users)
+                .Include(p => p.Users)               
                 .ToListAsync(cancellationToken);
         }
 
         public async Task<Game> GetGameById(Guid Id, CancellationToken cancellationToken)
         {
             return await _dbContext.Games
+                 .Include(p => p.Pitch)
+                .Include(p => p.Owner)
+                .Include(p => p.Users)          //dodać mappera do usera!!!!!!!!!!
                 .FirstOrDefaultAsync(x => x.Id == Id, cancellationToken);
         }
 
@@ -44,5 +48,7 @@ namespace PlayFieldBuddy.Repositories
             _dbContext.Games.Update(game);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+
     }
 }

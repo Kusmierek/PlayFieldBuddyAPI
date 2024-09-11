@@ -10,6 +10,8 @@ namespace PlayFieldBuddy.Domain.Models
         
         [Required]
         public Guid PitchId { get; set; }
+
+        public Guid UserId { get; set; }
         
         [Required]   
         public DateTime GameDate { get; set; }

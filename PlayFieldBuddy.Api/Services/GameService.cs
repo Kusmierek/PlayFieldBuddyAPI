@@ -35,7 +35,13 @@ namespace PlayFieldBuddy.Api.Services
                 Pitch = foundPitch,
                 Owner = foundUser
             };
-            
+
+            var user = await _userRepository.GetSingleUserById(game.UserId, cancellationToken);
+            if (user != null && !newGame.Users.Contains(user))
+            {
+                newGame.Users.Add(user);
+            }
+
             await _gameRepository.AddGame(newGame, cancellationToken);
             return true;
         }
@@ -52,7 +58,7 @@ namespace PlayFieldBuddy.Api.Services
             return true;
         }
 
-        public async Task<bool> UpdateGame(Game game, Guid Id, CancellationToken cancellationToken)
+        public async Task<bool> UpdateGame( GameUpdateRequest game, Guid Id, CancellationToken cancellationToken)
         {
             var foundGame = await _gameRepository.GetGameById(Id, cancellationToken);
             if (foundGame == null)
@@ -62,8 +68,12 @@ namespace PlayFieldBuddy.Api.Services
 
             foundGame.PlayersLimit = game.PlayersLimit;
             foundGame.GameDate = game.GameDate;
-            foundGame.Pitch = game.Pitch;
-            foundGame.Users = new List<User>();
+            
+            var user = await _userRepository.GetSingleUserById(game.UserId, cancellationToken);
+            if (user != null && !foundGame.Users.Contains(user))
+            {
+                foundGame.Users.Add(user);
+            }
 
             await _gameRepository.UpdateGame(foundGame, cancellationToken);
             return true;

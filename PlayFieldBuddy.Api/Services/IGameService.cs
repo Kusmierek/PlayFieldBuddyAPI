@@ -8,8 +8,7 @@ namespace PlayFieldBuddy.Api.Services
 
         Task<bool> RemoveGame(Guid id, CancellationToken cancellationToken);
 
-        Task<bool> UpdateGame(Game game, Guid id, CancellationToken cancellationToken);  
-
-
+        Task<bool> UpdateGame(GameUpdateRequest game, Guid id, CancellationToken cancellationToken);
+        
     }
 }

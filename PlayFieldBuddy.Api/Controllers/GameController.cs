@@ -67,8 +67,8 @@ namespace PlayFieldBuddy.Api.Controllers
             }
         }
 
-        [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateGame([FromRoute] Guid id, [FromBody] Game game, CancellationToken cancellationToken)
+        [HttpPut]
+        public async Task<IActionResult> UpdateGame([FromBody] GameUpdateRequest game, Guid id, CancellationToken cancellationToken)
         {
             try
             {

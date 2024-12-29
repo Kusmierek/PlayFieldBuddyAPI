@@ -27,8 +27,27 @@ namespace PlayFieldBuddy.Api.Controllers
         {
             try
             {
-                var getGame = await _gameRepository.GetGameById(Id, cancellationToken);
-                return Ok(getGame);
+                var game = await _gameRepository.GetGameById(Id, cancellationToken);
+
+                if (game == null)
+                {
+                    return NotFound("Game not found.");
+                }
+
+                // Mapowanie na DTO
+                var gameDto = new GameDto
+                {
+                    Id = game.Id,
+                    GameDate = game.GameDate,
+                    PlayersLimit = game.PlayersLimit,
+                    Users = game.Users.Select(u => new UserDto
+                    {
+                        Id = u.Id,
+                        Username = u.Username
+                    }).ToList()
+                };
+
+                return Ok(gameDto);
             }
             catch (Exception ex)
             {
@@ -42,8 +61,22 @@ namespace PlayFieldBuddy.Api.Controllers
         {
             try
             {
-                var getGames = await _gameRepository.GetAllGames(cancellationToken);
-                return Ok(getGames);
+                var games = await _gameRepository.GetAllGames(cancellationToken);
+
+                // Mapowanie na DTO
+                var gamesDto = games.Select(g => new GameDto
+                {
+                    Id = g.Id,
+                    GameDate = g.GameDate,
+                    PlayersLimit = g.PlayersLimit,
+                    Users = g.Users.Select(u => new UserDto
+                    {
+                        Id = u.Id,
+                        Username = u.Username
+                    }).ToList()
+                }).ToList();
+
+                return Ok(gamesDto);
             }
             catch (Exception ex)
             {

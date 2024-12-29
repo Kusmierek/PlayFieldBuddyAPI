@@ -30,7 +30,8 @@ namespace PlayFieldBuddy.Repositories
             return await _dbContext.Games
                 .Include(p=>p.Pitch)
                 .Include(p => p.Owner)
-                .Include(p => p.Users)               
+                .Include(p => p.Users)  
+              
                 .ToListAsync(cancellationToken);
         }
 

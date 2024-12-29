@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PlayFieldBuddy.Api.Services;
 using PlayFieldBuddy.Domain.Models;
@@ -14,12 +15,14 @@ namespace PlayFieldBuddy.Api.Controllers
         private readonly IGameService _gameService;
         private readonly IGameRepository _gameRepository;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
-        public GameController(IGameService gameService, IGameRepository gameRepository, ILogger logger)
+        public GameController(IGameService gameService, IGameRepository gameRepository, ILogger logger, IMapper mapper)
         {
             _gameService = gameService;
             _gameRepository = gameRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("{Id}")]
@@ -27,27 +30,9 @@ namespace PlayFieldBuddy.Api.Controllers
         {
             try
             {
-                var game = await _gameRepository.GetGameById(Id, cancellationToken);
+                var getGame = await _gameRepository.GetGameById(Id, cancellationToken);
 
-                if (game == null)
-                {
-                    return NotFound("Game not found.");
-                }
-
-                // Mapowanie na DTO
-                var gameDto = new GameDto
-                {
-                    Id = game.Id,
-                    GameDate = game.GameDate,
-                    PlayersLimit = game.PlayersLimit,
-                    Users = game.Users.Select(u => new UserDto
-                    {
-                        Id = u.Id,
-                        Username = u.Username
-                    }).ToList()
-                };
-
-                return Ok(gameDto);
+                return Ok(getGame);
             }
             catch (Exception ex)
             {
@@ -61,29 +46,27 @@ namespace PlayFieldBuddy.Api.Controllers
         {
             try
             {
-                var games = await _gameRepository.GetAllGames(cancellationToken);
+                _logger.Information("Fetching all games...");
+                var getGames = await _gameRepository.GetAllGames(cancellationToken);
 
-                // Mapowanie na DTO
-                var gamesDto = games.Select(g => new GameDto
-                {
-                    Id = g.Id,
-                    GameDate = g.GameDate,
-                    PlayersLimit = g.PlayersLimit,
-                    Users = g.Users.Select(u => new UserDto
-                    {
-                        Id = u.Id,
-                        Username = u.Username
-                    }).ToList()
-                }).ToList();
+                _logger.Information("Mapping games to DTOs...");
+                var gameDtos = _mapper.Map<List<GameDto>>(getGames);
 
-                return Ok(gamesDto);
+                _logger.Information("Returning mapped games.");
+                return Ok(gameDtos);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something went wrong while searching for all Games. {ExceptionMessage}", ex.Message);
-                return Problem();
+                _logger.Error(ex, "Error occurred in GetAllGames.");
+                return StatusCode(500, new
+                {
+                    error = "An unexpected error occurred.",
+                    message = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddGame([FromBody] GameCreateRequest gameCreateRequest, CancellationToken cancellationToken)

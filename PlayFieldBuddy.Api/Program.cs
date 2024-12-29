@@ -5,12 +5,14 @@ using PlayFieldBuddy.Api.Services;
 using PlayFieldBuddy.Repositories;
 using PlayFieldBuddy.Repositories.Interfaces;
 using Serilog;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddHttpClient();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddJsonOptions(options => 
 { 
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -22,6 +24,8 @@ builder.Services
     .AddScoped<IPitchService, PitchService>()
     .AddScoped<IGameService, GameService>()
     .AddScoped<IGameRepository, GameRepository>();
+
+    
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

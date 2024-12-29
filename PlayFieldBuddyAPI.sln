@@ -1,24 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{902B0648-7901-496E-AF67-AAA269C07690}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FD516BC0-36F9-4ACC-BBD1-30F59C38A018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFieldBuddy.Api", "PlayFieldBuddy.Api\PlayFieldBuddy.Api.csproj", "{D0A9D154-74A5-42C7-ACA4-1216CEE9C7C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFieldBuddy.Api", "PlayFieldBuddy.Api\PlayFieldBuddy.Api.csproj", "{D0A9D154-74A5-42C7-ACA4-1216CEE9C7C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFieldBuddy.Domain", "PlayFieldBuddy.Domain\PlayFieldBuddy.Domain.csproj", "{DC015412-1905-49AB-B484-E92C5BBBD753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFieldBuddy.Domain", "PlayFieldBuddy.Domain\PlayFieldBuddy.Domain.csproj", "{DC015412-1905-49AB-B484-E92C5BBBD753}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayFieldBuddy.Repositories", "PlayFieldBuddy.Repositories\PlayFieldBuddy.Repositories.csproj", "{6DED51A2-BD74-4EBE-A426-FD4B750674BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayFieldBuddy.Repositories", "PlayFieldBuddy.Repositories\PlayFieldBuddy.Repositories.csproj", "{6DED51A2-BD74-4EBE-A426-FD4B750674BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D0A9D154-74A5-42C7-ACA4-1216CEE9C7C1} = {902B0648-7901-496E-AF67-AAA269C07690}
-		{DC015412-1905-49AB-B484-E92C5BBBD753} = {902B0648-7901-496E-AF67-AAA269C07690}
-		{6DED51A2-BD74-4EBE-A426-FD4B750674BA} = {902B0648-7901-496E-AF67-AAA269C07690}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D0A9D154-74A5-42C7-ACA4-1216CEE9C7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,5 +31,16 @@ Global
 		{6DED51A2-BD74-4EBE-A426-FD4B750674BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DED51A2-BD74-4EBE-A426-FD4B750674BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DED51A2-BD74-4EBE-A426-FD4B750674BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D0A9D154-74A5-42C7-ACA4-1216CEE9C7C1} = {902B0648-7901-496E-AF67-AAA269C07690}
+		{DC015412-1905-49AB-B484-E92C5BBBD753} = {902B0648-7901-496E-AF67-AAA269C07690}
+		{6DED51A2-BD74-4EBE-A426-FD4B750674BA} = {902B0648-7901-496E-AF67-AAA269C07690}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A721234B-3D95-4853-858D-B924CCE8938E}
 	EndGlobalSection
 EndGlobal

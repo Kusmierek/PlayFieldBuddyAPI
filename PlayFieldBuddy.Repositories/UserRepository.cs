@@ -30,7 +30,10 @@ public class UserRepository : IUserRepository
     }
     
     public async Task<User?> GetSingleUserById(Guid id, CancellationToken cancellationToken) =>
-        await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+        await _context.Users
+        .Include(g=>g.OwnedGames)
+        .Include(g=>g.JoinedGames)
+        .FirstOrDefaultAsync(user => user.Id == id);
     
     public async Task<int?> UpdateUser(User user, CancellationToken cancellationToken)
     {
@@ -42,4 +45,8 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByName(string username, CancellationToken cancellationToken) =>
         await _context.Users.FirstOrDefaultAsync(user =>
             user.Username == username);
+
+    public async Task<User?> GetByMail(string mail, CancellationToken cancellationToken)  =>
+        await _context.Users.FirstOrDefaultAsync(user =>
+            user.Mail == mail);
 }

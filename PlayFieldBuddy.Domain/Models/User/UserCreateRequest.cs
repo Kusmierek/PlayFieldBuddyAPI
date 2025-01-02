@@ -18,4 +18,6 @@ public class UserCreateRequest
     [StringLength(30, MinimumLength = 5, ErrorMessage = "Email must be between 5 and 30 characters.")]
     [RegularExpression("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", ErrorMessage = "Email must be formatted correctly")]
     public string Mail { get; set; }
+
+    public Role Role { get; set; } = Role.User;
 }

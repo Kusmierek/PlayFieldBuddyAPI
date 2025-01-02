@@ -45,7 +45,7 @@ public class UserController : ControllerBase
     }
     
     
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<IActionResult> AddUser([FromBody] UserCreateRequest user, CancellationToken cancellationToken)
     {
         try
@@ -63,7 +63,23 @@ public class UserController : ControllerBase
             return Problem();
         }
     }
-    
+
+    [HttpPost("login")]
+    public async Task<IActionResult> login([FromBody]LoginDto dto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var token = await _userService.GenerateJwt(dto, cancellationToken);
+
+            return Ok(new { Token = token });
+        }
+        catch (BadHttpRequestException ex)
+        {
+            return Unauthorized(ex.Message); 
+        }
+
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
     {

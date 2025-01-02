@@ -3,7 +3,6 @@ namespace PlayFieldBuddy.Repositories;
 using Microsoft.EntityFrameworkCore;
 using PlayFieldBuddy.Domain.Models;
 
-
 public class PlayFieldBuddyDbContext : DbContext
 {
 
@@ -18,11 +17,15 @@ public class PlayFieldBuddyDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
-            .HasMany(e => e.Games)
+            .HasMany(e => e.JoinedGames)
             .WithMany(e => e.Users);
 
         modelBuilder.Entity<Pitch>()
-          .HasMany(e => e.Games);
+            .HasMany(e => e.Games)
+            .WithOne(e => e.Pitch);
 
+        modelBuilder.Entity<Game>()
+            .HasOne(g => g.Owner)
+            .WithMany(e => e.OwnedGames);
     }
 }

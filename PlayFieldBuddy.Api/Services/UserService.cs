@@ -50,10 +50,6 @@ public class UserService : IUserService
     
     public async Task<bool> AddUser(UserCreateRequest user, CancellationToken cancellationToken)
     {
-
-
-
-
         var foundUser = await _userRepository.GetByName(user.Username, cancellationToken);
         
         if (foundUser is not null)

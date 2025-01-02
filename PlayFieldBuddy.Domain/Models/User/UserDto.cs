@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlayFieldBuddy.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,4 +11,6 @@ public class UserDto
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
+
+    public Role Role { get; set; } = Role.User;
 }

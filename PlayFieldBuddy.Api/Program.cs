@@ -6,13 +6,20 @@ using PlayFieldBuddy.Repositories;
 using PlayFieldBuddy.Repositories.Interfaces;
 using Serilog;
 using AutoMapper;
+using FluentValidation;
+using PlayFieldBuddy.Domain.Models;
+
+using FluentValidation.AspNetCore;
+using PlayFieldBuddy.Api.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddHttpClient();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddControllers().AddFluentValidation();
 builder.Services.AddControllers().AddJsonOptions(options => 
 { 
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -23,7 +30,9 @@ builder.Services
     .AddScoped<IPitchRepository, PitchRepository>()
     .AddScoped<IPitchService, PitchService>()
     .AddScoped<IGameService, GameService>()
+    .AddScoped<IValidator<UserCreateRequest>, UserCreateRequestValidator>()
     .AddScoped<IGameRepository, GameRepository>();
+   
 
     
 

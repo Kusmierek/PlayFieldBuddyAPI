@@ -12,5 +12,7 @@ public class GameMapper : Profile
 
 
         CreateMap<Pitch, PitchDto>();
+
+
     }
 }

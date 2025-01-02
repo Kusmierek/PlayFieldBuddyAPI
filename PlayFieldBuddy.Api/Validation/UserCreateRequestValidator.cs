@@ -16,6 +16,11 @@ namespace PlayFieldBuddy.Api.Validation
                        {
                            context.AddFailure("Mail", "that email is taken");
                        }
+                       var usernameInUse = dbContext.Users.Any(u => u.Username == value);
+                       if (usernameInUse)
+                       {
+                           context.AddFailure("Username", "that username is taken");
+                       }
                    });
 
         }

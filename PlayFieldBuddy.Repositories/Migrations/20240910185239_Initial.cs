@@ -6,31 +6,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PlayFieldBuddy.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Games",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    GameDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PlayersLimit = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Games", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Pitches",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    adress = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     PitchType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -54,25 +41,28 @@ namespace PlayFieldBuddy.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GamePitch",
+                name: "Games",
                 columns: table => new
                 {
-                    GamesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PitchesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GameDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PlayersLimit = table.Column<int>(type: "integer", nullable: false),
+                    PitchId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GamePitch", x => new { x.GamesId, x.PitchesId });
+                    table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GamePitch_Games_GamesId",
-                        column: x => x.GamesId,
-                        principalTable: "Games",
+                        name: "FK_Games_Pitches_PitchId",
+                        column: x => x.PitchId,
+                        principalTable: "Pitches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GamePitch_Pitches_PitchesId",
-                        column: x => x.PitchesId,
-                        principalTable: "Pitches",
+                        name: "FK_Games_Users_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -81,15 +71,15 @@ namespace PlayFieldBuddy.Repositories.Migrations
                 name: "GameUser",
                 columns: table => new
                 {
-                    GamesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    JoinedGamesId = table.Column<Guid>(type: "uuid", nullable: false),
                     UsersId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GameUser", x => new { x.GamesId, x.UsersId });
+                    table.PrimaryKey("PK_GameUser", x => new { x.JoinedGamesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_GameUser_Games_GamesId",
-                        column: x => x.GamesId,
+                        name: "FK_GameUser_Games_JoinedGamesId",
+                        column: x => x.JoinedGamesId,
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -102,9 +92,14 @@ namespace PlayFieldBuddy.Repositories.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GamePitch_PitchesId",
-                table: "GamePitch",
-                column: "PitchesId");
+                name: "IX_Games_OwnerId",
+                table: "Games",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PitchId",
+                table: "Games",
+                column: "PitchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameUser_UsersId",
@@ -116,16 +111,13 @@ namespace PlayFieldBuddy.Repositories.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GamePitch");
-
-            migrationBuilder.DropTable(
                 name: "GameUser");
 
             migrationBuilder.DropTable(
-                name: "Pitches");
+                name: "Games");
 
             migrationBuilder.DropTable(
-                name: "Games");
+                name: "Pitches");
 
             migrationBuilder.DropTable(
                 name: "Users");

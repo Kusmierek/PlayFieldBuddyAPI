@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<int?> UpdateUser(User user, CancellationToken cancellationToken);
     Task DeleteUser(User user, CancellationToken cancellationToken);
     Task<User?> GetByName(string username, CancellationToken cancellationToken);
+    Task<User?> GetByMail(string mail, CancellationToken cancellationToken);
 }

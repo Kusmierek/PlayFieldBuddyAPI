@@ -1,5 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using Microsoft.IdentityModel.Tokens;
 using PlayFieldBuddy.Domain.Enum;
 using PlayFieldBuddy.Domain.Models;
 using PlayFieldBuddy.Repositories.Interfaces;
@@ -9,10 +13,12 @@ namespace PlayFieldBuddy.Api.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly AuthenticationSettings _authenticationSettings;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, AuthenticationSettings authenticationSettings)
     {
         _userRepository = userRepository;
+        _authenticationSettings = authenticationSettings;
     }
 
     public async Task<bool> DeleteUser(Guid id, CancellationToken cancellationToken)
@@ -38,7 +44,8 @@ public class UserService : IUserService
         }
 
         foundUser.Username = user.Username;
-        foundUser.Games = user.Games;
+        foundUser.JoinedGames = user.JoinedGames;
+        foundUser.OwnedGames = user.OwnedGames;
         foundUser.Password = HashPassword(user.Password);
         foundUser.Mail = user.Mail;
         foundUser.Role = Role.User;
@@ -63,7 +70,8 @@ public class UserService : IUserService
             Mail = user.Mail,
             Password = HashPassword(user.Password),
             Role = Role.User,
-            Games = new List<Game>()
+            JoinedGames = new List<Game>(),
+            OwnedGames = new List<Game>()
         };
         
         await _userRepository.AddUser(newUser, cancellationToken);
@@ -85,5 +93,47 @@ public class UserService : IUserService
 
             return result.ToString();
         }
+    }
+
+    public async Task<string> GenerateJwt(LoginDto dto, CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetByMail(dto.Mail, cancellationToken);
+
+        if (user is null || !VerifyPassword(dto.Password, user.Password))
+        {
+            throw new BadHttpRequestException("Invalid username or password");
+        }
+
+
+        var claims = new List<Claim>()
+        {
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Role, user.Role.ToString())  
+        };
+
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+
+
+        var token = new JwtSecurityToken(
+            _authenticationSettings.JwtIssuer,
+            claims: claims,
+            expires: expires,
+            signingCredentials: cred
+        );
+
+
+
+      
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+
+    private bool VerifyPassword(string enteredPassword, string storedPasswordHash)
+    {
+        return storedPasswordHash == HashPassword(enteredPassword);  
     }
 }
